@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://codeeagle.github.io/"/>
-  <updated>2020-04-28T02:21:45.293Z</updated>
+  <updated>2020-04-28T02:46:34.254Z</updated>
   <id>https://codeeagle.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于算法</title>
+    <link href="https://codeeagle.github.io/2020/04/28/About-Algorithm/"/>
+    <id>https://codeeagle.github.io/2020/04/28/About-Algorithm/</id>
+    <published>2020-04-28T11:45:15.000Z</published>
+    <updated>2020-04-28T02:46:34.254Z</updated>
+    
+    <content type="html"><![CDATA[<p>如果要跳槽，刷 LeetCode 是必不可少的咯？</p><a id="more"></a><div class="toc"><!-- toc --><!-- tocstop --></div>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;如果要跳槽，刷 LeetCode 是必不可少的咯？&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="https://codeeagle.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="https://codeeagle.github.io/tags/LeetCode/"/>
+    
+      <category term="Algorithm" scheme="https://codeeagle.github.io/tags/Algorithm/"/>
+    
+  </entry>
   
   <entry>
     <title>关于 OpenWrt 的折腾经过</title>
@@ -92,11 +116,11 @@
       <category term="Swift Audio Player" scheme="https://codeeagle.github.io/categories/Swift-Audio-Player/"/>
     
     
-      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+      <category term="Network" scheme="https://codeeagle.github.io/tags/Network/"/>
     
       <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
     
-      <category term="Network" scheme="https://codeeagle.github.io/tags/Network/"/>
+      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
     
       <category term="Pipeline" scheme="https://codeeagle.github.io/tags/Pipeline/"/>
     
@@ -151,17 +175,17 @@
       <category term="Swift Audio Player" scheme="https://codeeagle.github.io/categories/Swift-Audio-Player/"/>
     
     
-      <category term="Audio" scheme="https://codeeagle.github.io/tags/Audio/"/>
+      <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
     
       <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+    
+      <category term="Audio" scheme="https://codeeagle.github.io/tags/Audio/"/>
     
       <category term="AVFoundation" scheme="https://codeeagle.github.io/tags/AVFoundation/"/>
     
       <category term="AudioUnit" scheme="https://codeeagle.github.io/tags/AudioUnit/"/>
     
       <category term="Player" scheme="https://codeeagle.github.io/tags/Player/"/>
-    
-      <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
     
   </entry>
   
