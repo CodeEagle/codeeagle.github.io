@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://codeeagle.github.io/"/>
-  <updated>2020-04-28T02:46:34.254Z</updated>
+  <updated>2020-04-28T06:44:13.333Z</updated>
   <id>https://codeeagle.github.io/</id>
   
   <author>
@@ -21,13 +21,15 @@
     <link href="https://codeeagle.github.io/2020/04/28/About-Algorithm/"/>
     <id>https://codeeagle.github.io/2020/04/28/About-Algorithm/</id>
     <published>2020-04-28T11:45:15.000Z</published>
-    <updated>2020-04-28T02:46:34.254Z</updated>
+    <updated>2020-04-28T06:44:13.333Z</updated>
     
-    <content type="html"><![CDATA[<p>如果要跳槽，刷 LeetCode 是必不可少的咯？</p><a id="more"></a><div class="toc"><!-- toc --><!-- tocstop --></div>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>如果要跳槽，刷 LeetCode 是必不可少的咯？</p></blockquote><a id="more"></a><div class="toc"><!-- toc --><!-- tocstop --></div>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;如果要跳槽，刷 LeetCode 是必不可少的咯？&lt;/p&gt;
+      &lt;blockquote&gt;
+&lt;p&gt;如果要跳槽，刷 LeetCode 是必不可少的咯？&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
@@ -45,13 +47,15 @@
     <link href="https://codeeagle.github.io/2019/08/03/About-OpenWrt/"/>
     <id>https://codeeagle.github.io/2019/08/03/About-OpenWrt/</id>
     <published>2019-08-03T01:41:19.000Z</published>
-    <updated>2020-04-28T02:21:45.293Z</updated>
+    <updated>2020-04-28T06:44:10.271Z</updated>
     
-    <content type="html"><![CDATA[<p>错入 NetGear R7000p，开始折腾 树莓派 3B+，最后皈依 NetGear R7800</p><a id="more"></a><div class="toc"><!-- toc --><ul><li><a href="#yuan-qi">缘起</a></li><li><a href="#shu-mei-pai-de-chang-shi">树莓派的尝试</a></li><li><a href="#fan-nao-de-r7000p">烦恼的 R7000p</a></li><li><a href="#r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu">R7800 的刷机配置走了大弯路</a></li><li><a href="#hou-ji">后记</a></li></ul><!-- tocstop --></div><h2><span id="yuan-qi">缘起</span><a href="#yuan-qi" class="header-anchor"></a></h2><p>为什么要折腾 OpenWrt 呢，这个问题，应该是日益增长的设备对科学上网的渴望所导致的</p><p>一开始就只有电脑和手机有需求，但是开了个 100GB/mo 的套餐，这样花起来就不太值得了，每月都剩下 <code>90%</code> 的流量</p><p>还有有时候想让 PS4，NS 等也可以翻墙，都要去装个客户端就太麻烦了</p><p>所以思考着，透明网关之类的解决方案</p><h2><span id="shu-mei-pai-de-chang-shi">树莓派的尝试</span><a href="#shu-mei-pai-de-chang-shi" class="header-anchor"></a></h2><p>之前工作中接触到和硬件相关的东西，一时兴起买了个 <code>树莓派3B+</code>，最初打算是用来控制开关什么的，后来热情淡了就不了了之了</p><p>电脑端一直用着 <code>ClashX</code>，感觉挺好，希望用它来做一个透明网关</p><p>在树莓派装好 <code>Ubuntu</code> 装好 <code>Clash</code> 之后，剩下的网关配置等的阻碍了我的脚步，无奈之下只好又尘封它了</p><p>直到上周，忘记什么原因，一下子就陷入到 <code>OpenWrt/Lede</code> 中，寻思着拿 <code>树莓派3B+</code> 试试</p><p>下载的版本刷到树莓派上，不是 <code>彩屏</code>，就是 <code>Luci</code> 服务跑不起来</p><p>还是要自己编译才行</p><p>在 <code>macOS</code> 上编译了一下，各种问题，还是要按照推荐，用 <code>Ubuntu</code> 来 build</p><p>在安装了个虚拟机，成功编译出 <code>树莓派3B+</code> 的固件，之后就是刷机什么的</p><p>刷好 <code>Lede</code> 固件后，基本是开机就用，插上网线就行了</p><p>缺点还是有的，<code>树莓派3B+</code> 毕竟是软路由，无线的信号也不是很好很稳定</p><p>而且，只能作为辅助热点，不能完全替代路由，可以说是个尝鲜的方案</p><h2><span id="fan-nao-de-r7000p">烦恼的 R7000p</span><a href="#fan-nao-de-r7000p" class="header-anchor"></a></h2><p>不知道什么么错觉，让我以为家里的路由器是 <code>R7800</code>，在后台看到是 <code>R7000p</code> 的那一刻，我竟然怀疑是之前返修调包了，赶紧翻出订单一看，确实是 <code>R7000P</code></p><p>当时入手的时候以为只要是 <code>NetGear</code> 都能刷固件什么的，虽然也不是错的离谱</p><p><code>R7000P</code> 就是主流的 <code>OpenWrt/Lede</code> 刷不了，只能刷 <code>DDWrt</code> 之类的</p><p>有想过还是算了吧，就刷刷 <code>DDWrt</code> 将就下，但是只有一个路由器，刷坏了比较麻烦</p><p>想象还是狠下心来，入手个 <code>R7800</code> 刚好遇上电竞节，999 入手了</p><h2><span id="r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu">R7800 的刷机配置走了大弯路</span><a href="#r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu" class="header-anchor"></a></h2><p>刷机很顺利，直接在网页后台上传就行了，但是刷完机，我手贱，用 <code>树莓派3B+</code> 的配分直接恢复了配置，这导致了接下来的灾难</p><p>显示自己去看怎么配置 <code>WAN</code>，搜索有没有人共享出来 <code>R7800</code> 的配置，一夜郁闷的睡了</p><p>首先是一直只能利用不同网段去开配置后台，配置好后，科学上网组件运行不起来，访问不了外网。。。</p><p>开启作死模式，各种尝试修改配置</p><p><code>R7800</code> 很多时候要重启才生效，配置</p><p>最糟糕的第二天，直接把 <code>br-lan</code> 从 静态地址 改成 <code>pope</code> 拨号，导致 <code>ssh</code> 彻底连不上了</p><p>至暗时刻，甚至想过这就是代价，认了</p><p>但是看到说有不死 <code>uboot</code>，可以用 <code>tftp</code> 刷回来</p><p>在 <code>windows</code> 下总算刷机成功，满血复活（吐槽下，windows 的命令行太难用了）</p><p>再次刷机，不恢复配置，网线直接插 WAN 口就能用了，之前到底是多蠢。。。。</p><p>所以网上也没有所谓的 <code>R7800</code> 的配置下载。。。。</p><h2><span id="hou-ji">后记</span><a href="#hou-ji" class="header-anchor"></a></h2><p>配置好科学上网后，算是成功第一步了，家里的所有设备都可几无感接入了</p><p>后面再研究下有什么新玩法</p><p>还精简了些服务，lede 自带比较多功能，有些用不上，浪费内存</p>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>错入 NetGear R7000p，开始折腾 树莓派 3B+，最后皈依 NetGear R7800</p></blockquote><a id="more"></a><div class="toc"><!-- toc --><ul><li><a href="#yuan-qi">缘起</a></li><li><a href="#shu-mei-pai-de-chang-shi">树莓派的尝试</a></li><li><a href="#fan-nao-de-r7000p">烦恼的 R7000p</a></li><li><a href="#r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu">R7800 的刷机配置走了大弯路</a></li><li><a href="#hou-ji">后记</a></li></ul><!-- tocstop --></div><h2><span id="yuan-qi">缘起</span><a href="#yuan-qi" class="header-anchor"></a></h2><p>为什么要折腾 OpenWrt 呢，这个问题，应该是日益增长的设备对科学上网的渴望所导致的</p><p>一开始就只有电脑和手机有需求，但是开了个 100GB/mo 的套餐，这样花起来就不太值得了，每月都剩下 <code>90%</code> 的流量</p><p>还有有时候想让 PS4，NS 等也可以翻墙，都要去装个客户端就太麻烦了</p><p>所以思考着，透明网关之类的解决方案</p><h2><span id="shu-mei-pai-de-chang-shi">树莓派的尝试</span><a href="#shu-mei-pai-de-chang-shi" class="header-anchor"></a></h2><p>之前工作中接触到和硬件相关的东西，一时兴起买了个 <code>树莓派3B+</code>，最初打算是用来控制开关什么的，后来热情淡了就不了了之了</p><p>电脑端一直用着 <code>ClashX</code>，感觉挺好，希望用它来做一个透明网关</p><p>在树莓派装好 <code>Ubuntu</code> 装好 <code>Clash</code> 之后，剩下的网关配置等的阻碍了我的脚步，无奈之下只好又尘封它了</p><p>直到上周，忘记什么原因，一下子就陷入到 <code>OpenWrt/Lede</code> 中，寻思着拿 <code>树莓派3B+</code> 试试</p><p>下载的版本刷到树莓派上，不是 <code>彩屏</code>，就是 <code>Luci</code> 服务跑不起来</p><p>还是要自己编译才行</p><p>在 <code>macOS</code> 上编译了一下，各种问题，还是要按照推荐，用 <code>Ubuntu</code> 来 build</p><p>在安装了个虚拟机，成功编译出 <code>树莓派3B+</code> 的固件，之后就是刷机什么的</p><p>刷好 <code>Lede</code> 固件后，基本是开机就用，插上网线就行了</p><p>缺点还是有的，<code>树莓派3B+</code> 毕竟是软路由，无线的信号也不是很好很稳定</p><p>而且，只能作为辅助热点，不能完全替代路由，可以说是个尝鲜的方案</p><h2><span id="fan-nao-de-r7000p">烦恼的 R7000p</span><a href="#fan-nao-de-r7000p" class="header-anchor"></a></h2><p>不知道什么么错觉，让我以为家里的路由器是 <code>R7800</code>，在后台看到是 <code>R7000p</code> 的那一刻，我竟然怀疑是之前返修调包了，赶紧翻出订单一看，确实是 <code>R7000P</code></p><p>当时入手的时候以为只要是 <code>NetGear</code> 都能刷固件什么的，虽然也不是错的离谱</p><p><code>R7000P</code> 就是主流的 <code>OpenWrt/Lede</code> 刷不了，只能刷 <code>DDWrt</code> 之类的</p><p>有想过还是算了吧，就刷刷 <code>DDWrt</code> 将就下，但是只有一个路由器，刷坏了比较麻烦</p><p>想象还是狠下心来，入手个 <code>R7800</code> 刚好遇上电竞节，999 入手了</p><h2><span id="r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu">R7800 的刷机配置走了大弯路</span><a href="#r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu" class="header-anchor"></a></h2><p>刷机很顺利，直接在网页后台上传就行了，但是刷完机，我手贱，用 <code>树莓派3B+</code> 的配分直接恢复了配置，这导致了接下来的灾难</p><p>显示自己去看怎么配置 <code>WAN</code>，搜索有没有人共享出来 <code>R7800</code> 的配置，一夜郁闷的睡了</p><p>首先是一直只能利用不同网段去开配置后台，配置好后，科学上网组件运行不起来，访问不了外网。。。</p><p>开启作死模式，各种尝试修改配置</p><p><code>R7800</code> 很多时候要重启才生效，配置</p><p>最糟糕的第二天，直接把 <code>br-lan</code> 从 静态地址 改成 <code>pope</code> 拨号，导致 <code>ssh</code> 彻底连不上了</p><p>至暗时刻，甚至想过这就是代价，认了</p><p>但是看到说有不死 <code>uboot</code>，可以用 <code>tftp</code> 刷回来</p><p>在 <code>windows</code> 下总算刷机成功，满血复活（吐槽下，windows 的命令行太难用了）</p><p>再次刷机，不恢复配置，网线直接插 WAN 口就能用了，之前到底是多蠢。。。。</p><p>所以网上也没有所谓的 <code>R7800</code> 的配置下载。。。。</p><h2><span id="hou-ji">后记</span><a href="#hou-ji" class="header-anchor"></a></h2><p>配置好科学上网后，算是成功第一步了，家里的所有设备都可几无感接入了</p><p>后面再研究下有什么新玩法</p><p>还精简了些服务，lede 自带比较多功能，有些用不上，浪费内存</p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;错入 NetGear R7000p，开始折腾 树莓派 3B+，最后皈依 NetGear R7800&lt;/p&gt;
+      &lt;blockquote&gt;
+&lt;p&gt;错入 NetGear R7000p，开始折腾 树莓派 3B+，最后皈依 NetGear R7800&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
