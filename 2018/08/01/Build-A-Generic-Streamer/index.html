@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>构建通用的文件流提供器(Stream Provider) · SelfStudio</title><meta name="description" content="构建通用的文件流提供器(Stream Provider) - Lincoln.L"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon shortcut" href="/favicon.ico" type="image/x-icon"><link rel="mask-icon" sizes="any" href="/favicon.svg"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://codeeagle.github.io/atom.xml" title="SelfStudio"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">构建通用的文件流提供器(Stream Provider)</h1><span class="post-info post-data-info">2018年8月1日</span><div class="post-content"><blockquote>
+<p>Code Name: APlay 02</p>
+</blockquote>
+<a id="more"></a>
+<div class="toc">
+
+<!-- toc -->
+<ul>
+<li><a href="#wen-jian-liu-ti-gong-qi-xie-yi-streamprovider">文件流提供器协议 StreamProvider</a><ul>
+<li><a href="#protocol-ding-yi">Protocol 定义</a></li>
+<li><a href="#outputpipeline">OutputPipeline</a></li>
+<li><a href="#bufferingprogress">bufferingProgress</a></li>
+</ul>
+</li>
+<li><a href="#wang-luo-wen-jian-liu-ben-di-wen-jian-liu">网络文件流 &amp; 本地文件流</a></li>
+<li><a href="#shi-yong-dao-de-di-san-fang-ku">使用到的第三方库</a></li>
+</ul>
+<!-- tocstop -->
+</div>
+
+<h2><span id="wen-jian-liu-ti-gong-qi-xie-yi-streamprovider">文件流提供器协议 StreamProvider</span><a href="#wen-jian-liu-ti-gong-qi-xie-yi-streamprovider" class="header-anchor"></a></h2><blockquote>
+<p><a href="https://github.com/CodeEagle/APlay/blob/master/APlay/Protocols/StreamProviderCompatible.swift" target="_blank" rel="noopener">StreamProviderCompatible.swift</a></p>
+</blockquote>
+<h3><span id="protocol-ding-yi">Protocol 定义</span><a href="#protocol-ding-yi" class="header-anchor"></a></h3><p>我们先来定义一个名为 <code>StreamProvider</code> 的协议，这个协议是我们为播放器后续操作提供原始数据流制订的规范</p>
+<ul>
+<li>对外部隐藏读取 <strong><em>网络文件流</em></strong> 和 <strong><em>本地文件流</em></strong> 的具体实现</li>
+<li>外部可以重写实现，方便定制</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">protocol</span> <span class="title">StreamProviderCompatible</span>: <span class="title">AnyObject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> outputPipeline: <span class="type">Delegated</span>&lt;<span class="type">StreamProvider</span>.<span class="type">Event</span>, <span class="type">Void</span>&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> position: <span class="type">StreamProvider</span>.<span class="type">Position</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> contentLength: <span class="type">UInt</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> info: <span class="type">StreamProvider</span>.<span class="type">URLInfo</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> bufferingProgress: <span class="type">Float</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">open</span><span class="params">(url: URL, at position: StreamProvider.Position)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">destroy</span><span class="params">()</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">pause</span><span class="params">()</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">resume</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">init</span>(config: <span class="type">ConfigurationCompatible</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以通过 <code>extension</code> 为协议 <code>StreamProvider</code> 的 <code>open(at:)</code> 方法加上一个带有默认值 <code>Position()</code> 的实现</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">StreamProvider</span> </span>&#123;</span><br><span class="line">    @inline(__always)</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">open</span><span class="params">()</span></span> <span class="keyword">throws</span> &#123; <span class="keyword">return</span> <span class="keyword">try</span> <span class="keyword">open</span>(at: <span class="type">Position</span>()) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面我们来详细分析下这个协议</p>
+<h3><span id="outputpipeline">OutputPipeline</span><a href="#outputpipeline" class="header-anchor"></a></h3><blockquote>
+<p>字面意思，输出管道，是该协议发出的事件流，是通过 <code>Delegated</code> 实现的，事件流的值是 <code>Event</code></p>
+<p>这些事件最终会流入 <code>Composer</code> 中，由 <code>Composer</code> 统一调度 <code>StreamProvider</code> 和 <code>AudioDecoder</code>，最终目的是生成解码后的 PCM 数据，存储到环形缓冲区<code>Uroboros</code>中</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Event</span> </span>&#123;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<pre><code>case readyForReady
+case hasBytesAvailable(UnsafePointer&lt;UInt8&gt;, UInt32, Bool)
+case endEncountered
+case errorOccurred(APlay.Error)
+case metadata([MetadataParser.Item])
+case metadataSize(UInt32)
+case flac(FlacMetadata)
+case unknown(Error)
+</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### position</span><br><span class="line">&gt;打开流位置的记录</span><br><span class="line"></span><br><span class="line">### contentLength</span><br><span class="line">&gt; 文件长度</span><br><span class="line"></span><br><span class="line">### info</span><br><span class="line">&gt;有关 url 的信息，根据 url 推断出来的 `AudioFileType` 等的信息</span><br><span class="line">&gt;</span><br><span class="line">&gt;`AudioFileType` 是对 `AudioFileTypeID` 二次封装的 `RawRepresentable` 类型，避免输入是不记得类型名字的烦恼</span><br><span class="line">&gt;```swift</span><br><span class="line">public enum URLInfo &#123;</span><br><span class="line">    case remote(URL, AudioFileType)</span><br><span class="line">    case local(URL, AudioFileType)</span><br><span class="line">    case unknown(URL)</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="bufferingprogress">bufferingProgress</span><a href="#bufferingprogress" class="header-anchor"></a></h3><blockquote>
+<p>缓冲的进度</p>
+</blockquote>
+<h2><span id="wang-luo-wen-jian-liu-amp-ben-di-wen-jian-liu">网络文件流 &amp; 本地文件流</span><a href="#wang-luo-wen-jian-liu-amp-ben-di-wen-jian-liu" class="header-anchor"></a></h2><blockquote>
+<p>具体实现还是看代码吧，有什么疑问可以在评论区交流下 😄，<a href="https://github.com/CodeEagle/APlay/blob/master/APlay/BuildInComponents/StreamProvider/Streamer.swift" target="_blank" rel="noopener">Streamer.swift</a></p>
+</blockquote>
+<p>下面我们来看下 <strong><em>网络文件流</em></strong> 和 <strong><em>本地文件流</em></strong> 的实现</p>
+<p>使用 <code>CFReadStreamCreateWithFile</code> 来创建 <strong><em>本地文件流</em></strong></p>
+<p>使用 <code>CFReadStreamCreateForHTTPRequest</code> 来创建 <strong><em>网络文件流</em></strong></p>
+<p>加入到新建的 <code>RunloopQueue</code> 中循环读取数据，然后派发 <code>StreamValue</code></p>
+<p>这里要加入 <code>TagParser</code>，分析文件流里面的 <code>Metadata</code> 信息，以便于计算音频长度。</p>
+<p>有个需要注意的地方是，<code>MP3</code> 文件可能同时存在 <code>ID3v1</code> 和 <code>ID3v2</code> 两个版本的信息，所以必须要检测文件最后的 128 个字节是否是 <code>ID3v1</code>。</p>
+<h2><span id="shi-yong-dao-de-di-san-fang-ku">使用到的第三方库</span><a href="#shi-yong-dao-de-di-san-fang-ku" class="header-anchor"></a></h2><p><a href="https://github.com/Cascable/runloop-queue" target="_blank" rel="noopener">RunloopQueue</a>: A GCD-like queue powered with the magic (and ruggedness) of CFRunLoop.</p>
+<blockquote>
+<p>在背景线程读取文件流</p>
+</blockquote>
+<p><a href="https://github.com/dreymonde/Delegated" target="_blank" rel="noopener">Delegated</a>: 👷‍♀️ Closure-based delegation without memory leaks</p>
+<blockquote>
+<p>消除 [weak self]</p>
+</blockquote>
+<p><a href="https://github.com/CodeEagle/APlay/blob/master/APlay/Vendor/Uroboros.swift" target="_blank" rel="noopener">Uroboros</a></p>
+<blockquote>
+<p>环形存储类，线程安全，支持同时读写。</p>
+</blockquote>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/09/17/GPG-with-multiple-accounts/" class="prev">上一篇</a><a href="/2018/07/10/Release-APlay-Framework/" class="next">下一篇</a></div><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>const gitalk = new Gitalk({
+  clientID: 'c044c998fa94bffa71eb',
+  clientSecret: '1eb2f5b6e9af8dbe0b2381a0c449dce57bb9e356',
+  repo: 'Comments',
+  owner: 'CodeEagle',
+  admin: ['CodeEagle'],
+  id: window.location.pathname,      // Ensure uniqueness and length less than 50
+  distractionFreeMode: true  // Facebook-like distraction free mode
+})
+gitalk.render('gitalk-container')</script><div class="copyright"><p>© 2018 - 2020 <a href="https://codeeagle.github.io">Lincoln.L</a> Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">Apollo</a>.</p><a href="https://github.com/CodeEagle"><svg height="18" viewbox="0 0 16 16" width="18"><path fill="#aaa" fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a><span>&nbsp;&nbsp;&nbsp;<a href="https://twitter.com/_SelfStudio"><svg width="18" height="18" viewbox="0 0 250 250"><path d="M78.62,226.59 C172.96,226.59 224.56,148.43 224.56,80.65 C224.56,78.43 224.56,76.22 224.41,74.02 C234.448314,66.7591086 243.113555,57.768794 250,47.47 C240.638791,51.6180177 230.708293,54.3382865 220.54,55.54 C231.24744,49.1298206 239.261235,39.0477199 243.09,27.17 C233.021575,33.1445532 222.006461,37.3551202 210.52,39.62 C194.620828,22.7139428 169.357194,18.5761258 148.895493,29.5267993 C128.433792,40.4774727 117.86275,63.7932573 123.11,86.4 C81.8689574,84.3324954 43.4447578,64.8532327 17.4,32.81 C3.78622756,56.2464473 10.7398788,86.2285948 33.28,101.28 C25.117412,101.038075 17.1327937,98.8361318 10,94.86 C10,95.07 10,95.29 10,95.51 C10.0066813,119.92593 27.2175149,140.955352 51.15,145.79 C43.598696,147.8494 35.6758059,148.150443 27.99,146.67 C34.7094793,167.564228 53.9657456,181.877839 75.91,182.29 C57.7473504,196.564319 35.3105951,204.313277 12.21,204.29 C8.12903569,204.282165 4.05204065,204.035075 0,203.55 C23.4563595,218.602766 50.749134,226.587169 78.62,226.55" fill="#aaa" fill-rule="evenodd"></path></svg></a><span>&nbsp;&nbsp;&nbsp;</span><a href="/atom.xml"><svg height="18" viewbox="0 0 16 16" width="18"><path style="fill:#aaa;" d="M3.011,0.005C1.354,0.005,0,1.349,0,3.005c0,0.073,0.005,8.795,0.005,9c0,2.209,1.793,4,4.002,4            c0.184,0,8.908,0.001,9.003,0.001c1.655,0,3-1.346,3-3.001C16.011,5.826,10.191,0.005,3.011,0.005z M4.012,14.005            c-1.105,0.002-2.001-0.894-2.001-1.999c-0.002-1.105,0.894-2.001,2.001-2.001c1.105-0.002,2.001,0.894,1.999,2.001            C6.013,13.11,5.117,14.006,4.012,14.005z M8.511,14.005c-0.829,0-1.5-0.671-1.5-1.5c0-1.931-1.57-3.5-3.5-3.5            c-0.829,0-1.5-0.671-1.5-1.5s0.671-1.5,1.5-1.5c3.584,0,6.5,2.916,6.5,6.5C10.011,13.333,9.34,14.005,8.511,14.005z M12.511,14.005            c-0.829,0-1.5-0.671-1.5-1.5c0-4.136-3.364-7.5-7.5-7.5c-0.829,0-1.5-0.671-1.5-1.5s0.671-1.5,1.5-1.5c5.79,0,10.5,4.71,10.5,10.5            C14.011,13.333,13.34,14.005,12.511,14.005z"></path></svg></a></span></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-119557423-1",'auto');ga('send','pageview');</script></body></html>

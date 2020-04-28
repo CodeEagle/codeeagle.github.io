@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title>使用 Swift 从零构建一个音乐播放器 · SelfStudio</title><meta name="description" content="使用 Swift 从零构建一个音乐播放器 - Lincoln.L"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon shortcut" href="/favicon.ico" type="image/x-icon"><link rel="mask-icon" sizes="any" href="/favicon.svg"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="https://codeeagle.github.io/atom.xml" title="SelfStudio"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">使用 Swift 从零构建一个音乐播放器</h1><span class="post-info post-data-info">2018年5月17日</span><div class="post-content"><blockquote>
+<p>Code Name: APlay 01</p>
+<p>这是一个系列专题，我们将学习如何使用 Swift 语言从零开始一步一步构建你自己的音乐播放器。</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>本人水平有限，如有错漏，欢迎指导，谢谢。</p>
+</blockquote>
+<div class="toc">
+
+<!-- toc -->
+<ul>
+<li><a href="#xi-lie-wen-zhang-lie-biao">系列文章列表</a></li>
+<li><a href="#qian-yan">前言</a></li>
+<li><a href="#dong-ji">动机</a></li>
+<li><a href="#bei-jing">背景</a></li>
+<li><a href="#code-name-aplay">Code Name: APlay</a></li>
+<li><a href="#next">Next</a></li>
+<li><a href="#xue-xi-zi-liao">学习资料</a></li>
+</ul>
+<!-- tocstop -->
+</div>
+
+<h2><span id="xi-lie-wen-zhang-lie-biao">系列文章列表</span><a href="#xi-lie-wen-zhang-lie-biao" class="header-anchor"></a></h2><ul>
+<li style="list-style: none"><input type="checkbox" checked> <a href="/2018/08/01/Build-A-Generic-Streamer/" title="构建通用的文件流提供器(Stream Provider)">构建通用的文件流提供器(Stream Provider)</a></li>
+<li style="list-style: none"><input type="checkbox"> 构建 ID3, Flac Metadata 解析器</li>
+<li style="list-style: none"><input type="checkbox"> 构建环形缓冲区(Circle Buffer)</li>
+<li style="list-style: none"><input type="checkbox"> 构建 iOS 系统支持音频解码器(Decoder)</li>
+<li style="list-style: none"><input type="checkbox"> 构建管理器(称之为 Composer)，将 Streamer 和 Decoder，Circle Buffer 串联起来</li>
+</ul>
+<h2><span id="qian-yan">前言</span><a href="#qian-yan" class="header-anchor"></a></h2><p>由于之前工作的内容是负责某小众音乐平台的 App (落网)，及由此机遇开始接触到音频处理这一块，摸爬滚打了几年，算是了解了 iOS 系统下音频处理的一些大概。</p>
+<p>一开始使用的是豆瓣开源的 <a href="https://github.com/douban/DOUAudioStreamer" target="_blank" rel="noopener">DOUAudioStreamer</a>，但是该项目缺于维护，并不能满足日益增长的实用需求。</p>
+<p>于是乎，寻找新的替代品。考察了多个开源库，<a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 是一个相对来说功能挺完善的的第三方开源库。实现也没有很复杂的逻辑和技术，修改起来也比较简单。</p>
+<p>在 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 的基础上，删除了部分无关的类，增加了适合项目的一些新功能。因为 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 是 Objective-C/C++ 实现的，对于使用 Swift 来说，不太友好。本着熟悉这个项目的目的使用 Swift 重写一遍，就有了现在的 <a href="https://github.com/CodeEagle/FreePlayer" target="_blank" rel="noopener">FreePlayer</a>。</p>
+<p>得益于重写的工作，对于 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 的架构设计、功能实现有了一定的了解，为实现此文的播放器打下基础。</p>
+<h2><span id="dong-ji">动机</span><a href="#dong-ji" class="header-anchor"></a></h2><p>由于都是比较有年代感的项目，大牛们都是用 <code>pthread_mutex_t</code>、<code>pthread_cond_t</code> 等来线程同步。如果要修改、添加功能，会很容易出错，导致死锁。</p>
+<p>于是在一年多以前开始着手构建更现代化的音频播放器，使用 GCD 来控制线程同步。</p>
+<p>中途放弃了好几次(对 iOS 音频处理理解不充分导致)，但是保持思考着问题的话，总会在某个时间能突然灵感一现，得到启发。</p>
+<h2><span id="bei-jing">背景</span><a href="#bei-jing" class="header-anchor"></a></h2><p>先看下 <a href="https://github.com/douban/DOUAudioStreamer" target="_blank" rel="noopener">DOUAudioStreamer</a> 和 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 的简单分析。</p>
+<h5><span id="douaudiostreamer-jian-yao-liu-cheng-he-xin-fang-fa">DOUAudioStreamer 简要流程/核心方法</span><a href="#douaudiostreamer-jian-yao-liu-cheng-he-xin-fang-fa" class="header-anchor"></a></h5><img src="/2018/05/17/Build-A-Audio-Stream-Player/DOUAudioStreamer.png" title="DOUAudioStreamer.png">
+<blockquote>
+<p>批量解码，导致 CPU 瞬时峰值比较高</p>
+</blockquote>
+<h5><span id="freestreamer-freeplayer-jian-yao-liu-cheng-he-xin-fang-fa">FreeStreamer/FreePlayer 简要流程/核心方法</span><a href="#freestreamer-freeplayer-jian-yao-liu-cheng-he-xin-fang-fa" class="header-anchor"></a></h5><img src="/2018/05/17/Build-A-Audio-Stream-Player/FreeStreamer.png" title="FreeStreamer.png">
+<blockquote>
+<p>每次解码单个 packet，CPU 平稳。但是歌曲切换时候，会有残留 buffer 等，延迟大。不支持 Wave 格式播放</p>
+</blockquote>
+<h2><span id="code-name-aplay">Code Name: APlay</span><a href="#code-name-aplay" class="header-anchor"></a></h2><h5><span id="aplay-jian-yao-liu-cheng-he-xin-fang-fa">APlay 简要流程/核心方法</span><a href="#aplay-jian-yao-liu-cheng-he-xin-fang-fa" class="header-anchor"></a></h5><img src="/2018/05/17/Build-A-Audio-Stream-Player/APlay.png" title="APlay.png">
+<blockquote>
+<p>使用全新 GCD 实现流控制，简化线程同步，避免出现死锁，更低的延迟，更低的 CPU 和内存占用</p>
+</blockquote>
+<p><a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a>，<a href="https://github.com/CodeEagle/FreePlayer" target="_blank" rel="noopener">FreePlayer</a> 播放器对 <code>WAVE</code> 格式支持不好，这也是新框架 <code>APlay</code> 需要解决的问题</p>
+<h2><span id="next">Next</span><a href="#next" class="header-anchor"></a></h2><a href="/2018/07/10/Release-APlay-Framework/" title="APlay 正式开源啦">APlay 正式开源啦</a>
+<h2><span id="xue-xi-zi-liao">学习资料</span><a href="#xue-xi-zi-liao" class="header-anchor"></a></h2><p><a href="https://blog.csdn.net/leixiaohua1020/article/details/18893769" target="_blank" rel="noopener">雷霄骅-视音频编解码技术零基础学习方法</a></p>
+<p><a href="https://www.amazon.com/Learning-Core-Audio-Hands-Programming/dp/0321636848" target="_blank" rel="noopener">Learning Core Audio A Hands-On Guide to Audio</a></p>
+<p><a href="https://legacy.gitbook.com/book/zonble/kkbox-ios-dev/details" target="_blank" rel="noopener">KKBOX iOS/Mac OS X 基礎開發教材</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/07/10/Release-APlay-Framework/" class="prev">上一篇</a><a href="/2018/05/16/Re-Start/" class="next">下一篇</a></div><div id="gitalk-container"></div><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>const gitalk = new Gitalk({
+  clientID: 'c044c998fa94bffa71eb',
+  clientSecret: '1eb2f5b6e9af8dbe0b2381a0c449dce57bb9e356',
+  repo: 'Comments',
+  owner: 'CodeEagle',
+  admin: ['CodeEagle'],
+  id: window.location.pathname,      // Ensure uniqueness and length less than 50
+  distractionFreeMode: true  // Facebook-like distraction free mode
+})
+gitalk.render('gitalk-container')</script><div class="copyright"><p>© 2018 - 2020 <a href="https://codeeagle.github.io">Lincoln.L</a> Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">Apollo</a>.</p><a href="https://github.com/CodeEagle"><svg height="18" viewbox="0 0 16 16" width="18"><path fill="#aaa" fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a><span>&nbsp;&nbsp;&nbsp;<a href="https://twitter.com/_SelfStudio"><svg width="18" height="18" viewbox="0 0 250 250"><path d="M78.62,226.59 C172.96,226.59 224.56,148.43 224.56,80.65 C224.56,78.43 224.56,76.22 224.41,74.02 C234.448314,66.7591086 243.113555,57.768794 250,47.47 C240.638791,51.6180177 230.708293,54.3382865 220.54,55.54 C231.24744,49.1298206 239.261235,39.0477199 243.09,27.17 C233.021575,33.1445532 222.006461,37.3551202 210.52,39.62 C194.620828,22.7139428 169.357194,18.5761258 148.895493,29.5267993 C128.433792,40.4774727 117.86275,63.7932573 123.11,86.4 C81.8689574,84.3324954 43.4447578,64.8532327 17.4,32.81 C3.78622756,56.2464473 10.7398788,86.2285948 33.28,101.28 C25.117412,101.038075 17.1327937,98.8361318 10,94.86 C10,95.07 10,95.29 10,95.51 C10.0066813,119.92593 27.2175149,140.955352 51.15,145.79 C43.598696,147.8494 35.6758059,148.150443 27.99,146.67 C34.7094793,167.564228 53.9657456,181.877839 75.91,182.29 C57.7473504,196.564319 35.3105951,204.313277 12.21,204.29 C8.12903569,204.282165 4.05204065,204.035075 0,203.55 C23.4563595,218.602766 50.749134,226.587169 78.62,226.55" fill="#aaa" fill-rule="evenodd"></path></svg></a><span>&nbsp;&nbsp;&nbsp;</span><a href="/atom.xml"><svg height="18" viewbox="0 0 16 16" width="18"><path style="fill:#aaa;" d="M3.011,0.005C1.354,0.005,0,1.349,0,3.005c0,0.073,0.005,8.795,0.005,9c0,2.209,1.793,4,4.002,4            c0.184,0,8.908,0.001,9.003,0.001c1.655,0,3-1.346,3-3.001C16.011,5.826,10.191,0.005,3.011,0.005z M4.012,14.005            c-1.105,0.002-2.001-0.894-2.001-1.999c-0.002-1.105,0.894-2.001,2.001-2.001c1.105-0.002,2.001,0.894,1.999,2.001            C6.013,13.11,5.117,14.006,4.012,14.005z M8.511,14.005c-0.829,0-1.5-0.671-1.5-1.5c0-1.931-1.57-3.5-3.5-3.5            c-0.829,0-1.5-0.671-1.5-1.5s0.671-1.5,1.5-1.5c3.584,0,6.5,2.916,6.5,6.5C10.011,13.333,9.34,14.005,8.511,14.005z M12.511,14.005            c-0.829,0-1.5-0.671-1.5-1.5c0-4.136-3.364-7.5-7.5-7.5c-0.829,0-1.5-0.671-1.5-1.5s0.671-1.5,1.5-1.5c5.79,0,10.5,4.71,10.5,10.5            C14.011,13.333,13.34,14.005,12.511,14.005z"></path></svg></a></span></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;e=o.createElement(i);r=o.getElementsByTagName(i)[0];e.src='//www.google-analytics.com/analytics.js';r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));ga('create',"UA-119557423-1",'auto');ga('send','pageview');</script></body></html>

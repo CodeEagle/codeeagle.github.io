@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>SelfStudio</title>
+  
+  <subtitle>Keep Coding...</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://codeeagle.github.io/"/>
+  <updated>2020-04-28T02:21:45.293Z</updated>
+  <id>https://codeeagle.github.io/</id>
+  
+  <author>
+    <name>Lincoln.L</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于 OpenWrt 的折腾经过</title>
+    <link href="https://codeeagle.github.io/2019/08/03/About-OpenWrt/"/>
+    <id>https://codeeagle.github.io/2019/08/03/About-OpenWrt/</id>
+    <published>2019-08-03T01:41:19.000Z</published>
+    <updated>2020-04-28T02:21:45.293Z</updated>
+    
+    <content type="html"><![CDATA[<p>错入 NetGear R7000p，开始折腾 树莓派 3B+，最后皈依 NetGear R7800</p><a id="more"></a><div class="toc"><!-- toc --><ul><li><a href="#yuan-qi">缘起</a></li><li><a href="#shu-mei-pai-de-chang-shi">树莓派的尝试</a></li><li><a href="#fan-nao-de-r7000p">烦恼的 R7000p</a></li><li><a href="#r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu">R7800 的刷机配置走了大弯路</a></li><li><a href="#hou-ji">后记</a></li></ul><!-- tocstop --></div><h2><span id="yuan-qi">缘起</span><a href="#yuan-qi" class="header-anchor"></a></h2><p>为什么要折腾 OpenWrt 呢，这个问题，应该是日益增长的设备对科学上网的渴望所导致的</p><p>一开始就只有电脑和手机有需求，但是开了个 100GB/mo 的套餐，这样花起来就不太值得了，每月都剩下 <code>90%</code> 的流量</p><p>还有有时候想让 PS4，NS 等也可以翻墙，都要去装个客户端就太麻烦了</p><p>所以思考着，透明网关之类的解决方案</p><h2><span id="shu-mei-pai-de-chang-shi">树莓派的尝试</span><a href="#shu-mei-pai-de-chang-shi" class="header-anchor"></a></h2><p>之前工作中接触到和硬件相关的东西，一时兴起买了个 <code>树莓派3B+</code>，最初打算是用来控制开关什么的，后来热情淡了就不了了之了</p><p>电脑端一直用着 <code>ClashX</code>，感觉挺好，希望用它来做一个透明网关</p><p>在树莓派装好 <code>Ubuntu</code> 装好 <code>Clash</code> 之后，剩下的网关配置等的阻碍了我的脚步，无奈之下只好又尘封它了</p><p>直到上周，忘记什么原因，一下子就陷入到 <code>OpenWrt/Lede</code> 中，寻思着拿 <code>树莓派3B+</code> 试试</p><p>下载的版本刷到树莓派上，不是 <code>彩屏</code>，就是 <code>Luci</code> 服务跑不起来</p><p>还是要自己编译才行</p><p>在 <code>macOS</code> 上编译了一下，各种问题，还是要按照推荐，用 <code>Ubuntu</code> 来 build</p><p>在安装了个虚拟机，成功编译出 <code>树莓派3B+</code> 的固件，之后就是刷机什么的</p><p>刷好 <code>Lede</code> 固件后，基本是开机就用，插上网线就行了</p><p>缺点还是有的，<code>树莓派3B+</code> 毕竟是软路由，无线的信号也不是很好很稳定</p><p>而且，只能作为辅助热点，不能完全替代路由，可以说是个尝鲜的方案</p><h2><span id="fan-nao-de-r7000p">烦恼的 R7000p</span><a href="#fan-nao-de-r7000p" class="header-anchor"></a></h2><p>不知道什么么错觉，让我以为家里的路由器是 <code>R7800</code>，在后台看到是 <code>R7000p</code> 的那一刻，我竟然怀疑是之前返修调包了，赶紧翻出订单一看，确实是 <code>R7000P</code></p><p>当时入手的时候以为只要是 <code>NetGear</code> 都能刷固件什么的，虽然也不是错的离谱</p><p><code>R7000P</code> 就是主流的 <code>OpenWrt/Lede</code> 刷不了，只能刷 <code>DDWrt</code> 之类的</p><p>有想过还是算了吧，就刷刷 <code>DDWrt</code> 将就下，但是只有一个路由器，刷坏了比较麻烦</p><p>想象还是狠下心来，入手个 <code>R7800</code> 刚好遇上电竞节，999 入手了</p><h2><span id="r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu">R7800 的刷机配置走了大弯路</span><a href="#r7800-de-shua-ji-pei-zhi-zou-liao-da-wan-lu" class="header-anchor"></a></h2><p>刷机很顺利，直接在网页后台上传就行了，但是刷完机，我手贱，用 <code>树莓派3B+</code> 的配分直接恢复了配置，这导致了接下来的灾难</p><p>显示自己去看怎么配置 <code>WAN</code>，搜索有没有人共享出来 <code>R7800</code> 的配置，一夜郁闷的睡了</p><p>首先是一直只能利用不同网段去开配置后台，配置好后，科学上网组件运行不起来，访问不了外网。。。</p><p>开启作死模式，各种尝试修改配置</p><p><code>R7800</code> 很多时候要重启才生效，配置</p><p>最糟糕的第二天，直接把 <code>br-lan</code> 从 静态地址 改成 <code>pope</code> 拨号，导致 <code>ssh</code> 彻底连不上了</p><p>至暗时刻，甚至想过这就是代价，认了</p><p>但是看到说有不死 <code>uboot</code>，可以用 <code>tftp</code> 刷回来</p><p>在 <code>windows</code> 下总算刷机成功，满血复活（吐槽下，windows 的命令行太难用了）</p><p>再次刷机，不恢复配置，网线直接插 WAN 口就能用了，之前到底是多蠢。。。。</p><p>所以网上也没有所谓的 <code>R7800</code> 的配置下载。。。。</p><h2><span id="hou-ji">后记</span><a href="#hou-ji" class="header-anchor"></a></h2><p>配置好科学上网后，算是成功第一步了，家里的所有设备都可几无感接入了</p><p>后面再研究下有什么新玩法</p><p>还精简了些服务，lede 自带比较多功能，有些用不上，浪费内存</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;错入 NetGear R7000p，开始折腾 树莓派 3B+，最后皈依 NetGear R7800&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="OpenWrt" scheme="https://codeeagle.github.io/tags/OpenWrt/"/>
+    
+      <category term="Raspberry 3B+" scheme="https://codeeagle.github.io/tags/Raspberry-3B/"/>
+    
+      <category term="NetGear" scheme="https://codeeagle.github.io/tags/NetGear/"/>
+    
+      <category term="R7000P" scheme="https://codeeagle.github.io/tags/R7000P/"/>
+    
+      <category term="R7800" scheme="https://codeeagle.github.io/tags/R7800/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>macOS 多账户使用 GPG 的方法</title>
+    <link href="https://codeeagle.github.io/2018/09/17/GPG-with-multiple-accounts/"/>
+    <id>https://codeeagle.github.io/2018/09/17/GPG-with-multiple-accounts/</id>
+    <published>2018-09-17T10:19:58.000Z</published>
+    <updated>2020-04-28T02:22:03.673Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>一世流流长，边个会唔用到 github， gitlab 噶</p></blockquote><a id="more"></a><div class="toc"><!-- toc --><ul><li><a href="#definition">Definition</a></li><li><a href="#intro">Intro</a></li><li><a href="#tool">Tool</a></li><li><a href="#configurations">Configurations</a></li><li><a href="#solution">Solution</a></li><li><a href="#end">End</a></li></ul><!-- tocstop --></div><h2><span id="definition">Definition</span><a href="#definition" class="header-anchor"></a></h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">GitAccount</span> </span>&#123;</span><br><span class="line">  <span class="keyword">case</span> gitLab(<span class="type">String</span>), gitHub(<span class="type">String</span>), bitBucket(<span class="type">String</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2><span id="intro">Intro</span><a href="#intro" class="header-anchor"></a></h2><p>由于在机器上，难免会遇到这个问题，公司的<code>GitAccount</code>和自己的<code>GitAccount</code>，在<code>SSH Key</code>与<code>GPG Key</code>配置时候的各种问题。</p><p>本篇文章不讨论同域多个名账户配置(没找到好方法)，即多个<code>GitAccount</code>共存时候<code>SSH</code>和<code>GPG</code>的配置。</p><h2><span id="tool">Tool</span><a href="#tool" class="header-anchor"></a></h2><p>你可以使用 <code>Terminal</code> 的 <code>GPG</code>，安装方法</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install gpg</span><br></pre></td></tr></table></figure><p>或者使用 GUI 工具<a href="https://gpgtools.org/" target="_blank" rel="noopener">GPG-Suite</a></p><blockquote><p>使用此工具会异常方便，省去很多配置。。。</p></blockquote><p>生成 GPG Key 的步骤在此略过</p><h2><span id="configurations">Configurations</span><a href="#configurations" class="header-anchor"></a></h2><p>Google 了一下，如无意外 都是</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git config --global gpg.programe <span class="string">"gpg"</span></span><br><span class="line">git config --global commit.gpgsign <span class="string">"true"</span></span><br><span class="line">git config --global user.email <span class="string">"xx@xx.com"</span></span><br><span class="line">git config --global user.name <span class="string">"xxx"</span></span><br><span class="line">git config --global user.signingkey <span class="string">"xxxxxx"</span></span><br></pre></td></tr></table></figure><p>还有什么配置 GPG-Agent 的，hin 复杂。。。。(所以我选择 GPG-Suite)</p><p>这样配置的话会导致不用账户都用该配置，会导致 <code>commit</code> 失败。</p><h2><span id="solution">Solution</span><a href="#solution" class="header-anchor"></a></h2><p>其实可以这样，在<code>~/.gitconfig</code>里面配置一个全局的账户</p><p>然后某个 Repository 你是用别的账户的，就可以独自为该 Repo 配置一下</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git config gpg.programe <span class="string">"gpg"</span></span><br><span class="line">git config commit.gpgsign <span class="string">"true"</span></span><br><span class="line">git config user.email <span class="string">"xx@xx.com"</span></span><br><span class="line">git config user.name <span class="string">"xxx"</span></span><br><span class="line">git config user.signingkey <span class="string">"xxxxxx"</span></span><br></pre></td></tr></table></figure><p>就是把 Global 去掉。。。。。(哈哈哈，就是这么简单明了)</p><p>我们可以把这个整理成一个 <code>alias</code>，放在<code>~/.zshrc</code>里面，下次就直接输入就好了</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> configgitrepo=<span class="string">"git config user.signingkey \"xxxxx\" &amp;&amp; git config user.email \"xx@xx.com\" &amp;&amp; git config user.name \"xxx\" &amp;&amp; git config gpg.programe \"gpg\" &amp;&amp; git config commit.gpgsign \"true\""</span></span><br></pre></td></tr></table></figure><h2><span id="end">End</span><a href="#end" class="header-anchor"></a></h2><p>权当记录一下，没啥技术含量</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;一世流流长，边个会唔用到 github， gitlab 噶&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Tricks" scheme="https://codeeagle.github.io/categories/Tricks/"/>
+    
+    
+      <category term="Git" scheme="https://codeeagle.github.io/tags/Git/"/>
+    
+      <category term="GPG" scheme="https://codeeagle.github.io/tags/GPG/"/>
+    
+      <category term="macOS" scheme="https://codeeagle.github.io/tags/macOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>构建通用的文件流提供器(Stream Provider)</title>
+    <link href="https://codeeagle.github.io/2018/08/01/Build-A-Generic-Streamer/"/>
+    <id>https://codeeagle.github.io/2018/08/01/Build-A-Generic-Streamer/</id>
+    <published>2018-08-01T06:19:15.000Z</published>
+    <updated>2020-04-28T02:22:03.672Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Code Name: APlay 02</p></blockquote><a id="more"></a><div class="toc"><!-- toc --><ul><li><a href="#wen-jian-liu-ti-gong-qi-xie-yi-streamprovider">文件流提供器协议 StreamProvider</a><ul><li><a href="#protocol-ding-yi">Protocol 定义</a></li><li><a href="#outputpipeline">OutputPipeline</a></li><li><a href="#bufferingprogress">bufferingProgress</a></li></ul></li><li><a href="#wang-luo-wen-jian-liu-ben-di-wen-jian-liu">网络文件流 &amp; 本地文件流</a></li><li><a href="#shi-yong-dao-de-di-san-fang-ku">使用到的第三方库</a></li></ul><!-- tocstop --></div><h2><span id="wen-jian-liu-ti-gong-qi-xie-yi-streamprovider">文件流提供器协议 StreamProvider</span><a href="#wen-jian-liu-ti-gong-qi-xie-yi-streamprovider" class="header-anchor"></a></h2><blockquote><p><a href="https://github.com/CodeEagle/APlay/blob/master/APlay/Protocols/StreamProviderCompatible.swift" target="_blank" rel="noopener">StreamProviderCompatible.swift</a></p></blockquote><h3><span id="protocol-ding-yi">Protocol 定义</span><a href="#protocol-ding-yi" class="header-anchor"></a></h3><p>我们先来定义一个名为 <code>StreamProvider</code> 的协议，这个协议是我们为播放器后续操作提供原始数据流制订的规范</p><ul><li>对外部隐藏读取 <strong><em>网络文件流</em></strong> 和 <strong><em>本地文件流</em></strong> 的具体实现</li><li>外部可以重写实现，方便定制</li></ul><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">protocol</span> <span class="title">StreamProviderCompatible</span>: <span class="title">AnyObject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> outputPipeline: <span class="type">Delegated</span>&lt;<span class="type">StreamProvider</span>.<span class="type">Event</span>, <span class="type">Void</span>&gt; &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> position: <span class="type">StreamProvider</span>.<span class="type">Position</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> contentLength: <span class="type">UInt</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> info: <span class="type">StreamProvider</span>.<span class="type">URLInfo</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> bufferingProgress: <span class="type">Float</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">open</span><span class="params">(url: URL, at position: StreamProvider.Position)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">destroy</span><span class="params">()</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">pause</span><span class="params">()</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">resume</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">init</span>(config: <span class="type">ConfigurationCompatible</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>我们可以通过 <code>extension</code> 为协议 <code>StreamProvider</code> 的 <code>open(at:)</code> 方法加上一个带有默认值 <code>Position()</code> 的实现</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">StreamProvider</span> </span>&#123;</span><br><span class="line">    @inline(__always)</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">open</span><span class="params">()</span></span> <span class="keyword">throws</span> &#123; <span class="keyword">return</span> <span class="keyword">try</span> <span class="keyword">open</span>(at: <span class="type">Position</span>()) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>下面我们来详细分析下这个协议</p><h3><span id="outputpipeline">OutputPipeline</span><a href="#outputpipeline" class="header-anchor"></a></h3><blockquote><p>字面意思，输出管道，是该协议发出的事件流，是通过 <code>Delegated</code> 实现的，事件流的值是 <code>Event</code></p><p>这些事件最终会流入 <code>Composer</code> 中，由 <code>Composer</code> 统一调度 <code>StreamProvider</code> 和 <code>AudioDecoder</code>，最终目的是生成解码后的 PCM 数据，存储到环形缓冲区<code>Uroboros</code>中</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Event</span> </span>&#123;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></blockquote><pre><code>case readyForReadycase hasBytesAvailable(UnsafePointer&lt;UInt8&gt;, UInt32, Bool)case endEncounteredcase errorOccurred(APlay.Error)case metadata([MetadataParser.Item])case metadataSize(UInt32)case flac(FlacMetadata)case unknown(Error)</code></pre><p>}</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### position</span><br><span class="line">&gt;打开流位置的记录</span><br><span class="line"></span><br><span class="line">### contentLength</span><br><span class="line">&gt; 文件长度</span><br><span class="line"></span><br><span class="line">### info</span><br><span class="line">&gt;有关 url 的信息，根据 url 推断出来的 `AudioFileType` 等的信息</span><br><span class="line">&gt;</span><br><span class="line">&gt;`AudioFileType` 是对 `AudioFileTypeID` 二次封装的 `RawRepresentable` 类型，避免输入是不记得类型名字的烦恼</span><br><span class="line">&gt;```swift</span><br><span class="line">public enum URLInfo &#123;</span><br><span class="line">    case remote(URL, AudioFileType)</span><br><span class="line">    case local(URL, AudioFileType)</span><br><span class="line">    case unknown(URL)</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><h3><span id="bufferingprogress">bufferingProgress</span><a href="#bufferingprogress" class="header-anchor"></a></h3><blockquote><p>缓冲的进度</p></blockquote><h2><span id="wang-luo-wen-jian-liu-amp-ben-di-wen-jian-liu">网络文件流 &amp; 本地文件流</span><a href="#wang-luo-wen-jian-liu-amp-ben-di-wen-jian-liu" class="header-anchor"></a></h2><blockquote><p>具体实现还是看代码吧，有什么疑问可以在评论区交流下 😄，<a href="https://github.com/CodeEagle/APlay/blob/master/APlay/BuildInComponents/StreamProvider/Streamer.swift" target="_blank" rel="noopener">Streamer.swift</a></p></blockquote><p>下面我们来看下 <strong><em>网络文件流</em></strong> 和 <strong><em>本地文件流</em></strong> 的实现</p><p>使用 <code>CFReadStreamCreateWithFile</code> 来创建 <strong><em>本地文件流</em></strong></p><p>使用 <code>CFReadStreamCreateForHTTPRequest</code> 来创建 <strong><em>网络文件流</em></strong></p><p>加入到新建的 <code>RunloopQueue</code> 中循环读取数据，然后派发 <code>StreamValue</code></p><p>这里要加入 <code>TagParser</code>，分析文件流里面的 <code>Metadata</code> 信息，以便于计算音频长度。</p><p>有个需要注意的地方是，<code>MP3</code> 文件可能同时存在 <code>ID3v1</code> 和 <code>ID3v2</code> 两个版本的信息，所以必须要检测文件最后的 128 个字节是否是 <code>ID3v1</code>。</p><h2><span id="shi-yong-dao-de-di-san-fang-ku">使用到的第三方库</span><a href="#shi-yong-dao-de-di-san-fang-ku" class="header-anchor"></a></h2><p><a href="https://github.com/Cascable/runloop-queue" target="_blank" rel="noopener">RunloopQueue</a>: A GCD-like queue powered with the magic (and ruggedness) of CFRunLoop.</p><blockquote><p>在背景线程读取文件流</p></blockquote><p><a href="https://github.com/dreymonde/Delegated" target="_blank" rel="noopener">Delegated</a>: 👷‍♀️ Closure-based delegation without memory leaks</p><blockquote><p>消除 [weak self]</p></blockquote><p><a href="https://github.com/CodeEagle/APlay/blob/master/APlay/Vendor/Uroboros.swift" target="_blank" rel="noopener">Uroboros</a></p><blockquote><p>环形存储类，线程安全，支持同时读写。</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;Code Name: APlay 02&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Swift Audio Player" scheme="https://codeeagle.github.io/categories/Swift-Audio-Player/"/>
+    
+    
+      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+    
+      <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
+    
+      <category term="Network" scheme="https://codeeagle.github.io/tags/Network/"/>
+    
+      <category term="Pipeline" scheme="https://codeeagle.github.io/tags/Pipeline/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>APlay 正式开源啦</title>
+    <link href="https://codeeagle.github.io/2018/07/10/Release-APlay-Framework/"/>
+    <id>https://codeeagle.github.io/2018/07/10/Release-APlay-Framework/</id>
+    <published>2018-07-10T02:12:00.000Z</published>
+    <updated>2020-04-28T02:22:03.674Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Version v0.0.1</p></blockquote><a id="more"></a><h2><span id="aplay-zheng-shi-kai-yuan-la">APlay 正式开源啦</span><a href="#aplay-zheng-shi-kai-yuan-la" class="header-anchor"></a></h2><p>自从上一篇文章后，又有了许多改动，原本以为写的差不多了，但还是挺多地方需要修改的。</p><ul><li style="list-style: none"><input type="checkbox" checked> 重写了 MP3 的 metadata parser</li><li style="list-style: none"><input type="checkbox" checked> 新增了 FLAC 的 metadata parser，支持 seek（需要 seektable）</li><li style="list-style: none"><input type="checkbox" checked> 优化了 WAVE 的 seek 操作</li><li style="list-style: none"><input type="checkbox" checked> 优化了 Packet 存储的逻辑，最大程度保证不会读取错误</li></ul><p>后续有空的话会写下该框架的一些技术心得</p><p>有打算写个播放器 App，再看吧</p><p><a href="https://github.com/CodeEagle/APlay" target="_blank" rel="noopener">Github</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;Version v0.0.1&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="APlay" scheme="https://codeeagle.github.io/categories/APlay/"/>
+    
+    
+      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+    
+      <category term="Audio-Player" scheme="https://codeeagle.github.io/tags/Audio-Player/"/>
+    
+      <category term="Network-Streamer" scheme="https://codeeagle.github.io/tags/Network-Streamer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Swift 从零构建一个音乐播放器</title>
+    <link href="https://codeeagle.github.io/2018/05/17/Build-A-Audio-Stream-Player/"/>
+    <id>https://codeeagle.github.io/2018/05/17/Build-A-Audio-Stream-Player/</id>
+    <published>2018-05-17T14:56:59.000Z</published>
+    <updated>2020-04-28T02:21:45.294Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Code Name: APlay 01</p><p>这是一个系列专题，我们将学习如何使用 Swift 语言从零开始一步一步构建你自己的音乐播放器。</p></blockquote><a id="more"></a><blockquote><p>本人水平有限，如有错漏，欢迎指导，谢谢。</p></blockquote><div class="toc"><!-- toc --><ul><li><a href="#xi-lie-wen-zhang-lie-biao">系列文章列表</a></li><li><a href="#qian-yan">前言</a></li><li><a href="#dong-ji">动机</a></li><li><a href="#bei-jing">背景</a></li><li><a href="#code-name-aplay">Code Name: APlay</a></li><li><a href="#next">Next</a></li><li><a href="#xue-xi-zi-liao">学习资料</a></li></ul><!-- tocstop --></div><h2><span id="xi-lie-wen-zhang-lie-biao">系列文章列表</span><a href="#xi-lie-wen-zhang-lie-biao" class="header-anchor"></a></h2><ul><li style="list-style: none"><input type="checkbox" checked> <a href="/2018/08/01/Build-A-Generic-Streamer/" title="构建通用的文件流提供器(Stream Provider)">构建通用的文件流提供器(Stream Provider)</a></li><li style="list-style: none"><input type="checkbox"> 构建 ID3, Flac Metadata 解析器</li><li style="list-style: none"><input type="checkbox"> 构建环形缓冲区(Circle Buffer)</li><li style="list-style: none"><input type="checkbox"> 构建 iOS 系统支持音频解码器(Decoder)</li><li style="list-style: none"><input type="checkbox"> 构建管理器(称之为 Composer)，将 Streamer 和 Decoder，Circle Buffer 串联起来</li></ul><h2><span id="qian-yan">前言</span><a href="#qian-yan" class="header-anchor"></a></h2><p>由于之前工作的内容是负责某小众音乐平台的 App (落网)，及由此机遇开始接触到音频处理这一块，摸爬滚打了几年，算是了解了 iOS 系统下音频处理的一些大概。</p><p>一开始使用的是豆瓣开源的 <a href="https://github.com/douban/DOUAudioStreamer" target="_blank" rel="noopener">DOUAudioStreamer</a>，但是该项目缺于维护，并不能满足日益增长的实用需求。</p><p>于是乎，寻找新的替代品。考察了多个开源库，<a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 是一个相对来说功能挺完善的的第三方开源库。实现也没有很复杂的逻辑和技术，修改起来也比较简单。</p><p>在 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 的基础上，删除了部分无关的类，增加了适合项目的一些新功能。因为 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 是 Objective-C/C++ 实现的，对于使用 Swift 来说，不太友好。本着熟悉这个项目的目的使用 Swift 重写一遍，就有了现在的 <a href="https://github.com/CodeEagle/FreePlayer" target="_blank" rel="noopener">FreePlayer</a>。</p><p>得益于重写的工作，对于 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 的架构设计、功能实现有了一定的了解，为实现此文的播放器打下基础。</p><h2><span id="dong-ji">动机</span><a href="#dong-ji" class="header-anchor"></a></h2><p>由于都是比较有年代感的项目，大牛们都是用 <code>pthread_mutex_t</code>、<code>pthread_cond_t</code> 等来线程同步。如果要修改、添加功能，会很容易出错，导致死锁。</p><p>于是在一年多以前开始着手构建更现代化的音频播放器，使用 GCD 来控制线程同步。</p><p>中途放弃了好几次(对 iOS 音频处理理解不充分导致)，但是保持思考着问题的话，总会在某个时间能突然灵感一现，得到启发。</p><h2><span id="bei-jing">背景</span><a href="#bei-jing" class="header-anchor"></a></h2><p>先看下 <a href="https://github.com/douban/DOUAudioStreamer" target="_blank" rel="noopener">DOUAudioStreamer</a> 和 <a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a> 的简单分析。</p><h5><span id="douaudiostreamer-jian-yao-liu-cheng-he-xin-fang-fa">DOUAudioStreamer 简要流程/核心方法</span><a href="#douaudiostreamer-jian-yao-liu-cheng-he-xin-fang-fa" class="header-anchor"></a></h5><img src="/2018/05/17/Build-A-Audio-Stream-Player/DOUAudioStreamer.png" title="DOUAudioStreamer.png"><blockquote><p>批量解码，导致 CPU 瞬时峰值比较高</p></blockquote><h5><span id="freestreamer-freeplayer-jian-yao-liu-cheng-he-xin-fang-fa">FreeStreamer/FreePlayer 简要流程/核心方法</span><a href="#freestreamer-freeplayer-jian-yao-liu-cheng-he-xin-fang-fa" class="header-anchor"></a></h5><img src="/2018/05/17/Build-A-Audio-Stream-Player/FreeStreamer.png" title="FreeStreamer.png"><blockquote><p>每次解码单个 packet，CPU 平稳。但是歌曲切换时候，会有残留 buffer 等，延迟大。不支持 Wave 格式播放</p></blockquote><h2><span id="code-name-aplay">Code Name: APlay</span><a href="#code-name-aplay" class="header-anchor"></a></h2><h5><span id="aplay-jian-yao-liu-cheng-he-xin-fang-fa">APlay 简要流程/核心方法</span><a href="#aplay-jian-yao-liu-cheng-he-xin-fang-fa" class="header-anchor"></a></h5><img src="/2018/05/17/Build-A-Audio-Stream-Player/APlay.png" title="APlay.png"><blockquote><p>使用全新 GCD 实现流控制，简化线程同步，避免出现死锁，更低的延迟，更低的 CPU 和内存占用</p></blockquote><p><a href="https://github.com/muhku/FreeStreamer" target="_blank" rel="noopener">FreeStreamer</a>，<a href="https://github.com/CodeEagle/FreePlayer" target="_blank" rel="noopener">FreePlayer</a> 播放器对 <code>WAVE</code> 格式支持不好，这也是新框架 <code>APlay</code> 需要解决的问题</p><h2><span id="next">Next</span><a href="#next" class="header-anchor"></a></h2><a href="/2018/07/10/Release-APlay-Framework/" title="APlay 正式开源啦">APlay 正式开源啦</a><h2><span id="xue-xi-zi-liao">学习资料</span><a href="#xue-xi-zi-liao" class="header-anchor"></a></h2><p><a href="https://blog.csdn.net/leixiaohua1020/article/details/18893769" target="_blank" rel="noopener">雷霄骅-视音频编解码技术零基础学习方法</a></p><p><a href="https://www.amazon.com/Learning-Core-Audio-Hands-Programming/dp/0321636848" target="_blank" rel="noopener">Learning Core Audio A Hands-On Guide to Audio</a></p><p><a href="https://legacy.gitbook.com/book/zonble/kkbox-ios-dev/details" target="_blank" rel="noopener">KKBOX iOS/Mac OS X 基礎開發教材</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;Code Name: APlay 01&lt;/p&gt;
+&lt;p&gt;这是一个系列专题，我们将学习如何使用 Swift 语言从零开始一步一步构建你自己的音乐播放器。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Swift Audio Player" scheme="https://codeeagle.github.io/categories/Swift-Audio-Player/"/>
+    
+    
+      <category term="Audio" scheme="https://codeeagle.github.io/tags/Audio/"/>
+    
+      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+    
+      <category term="AVFoundation" scheme="https://codeeagle.github.io/tags/AVFoundation/"/>
+    
+      <category term="AudioUnit" scheme="https://codeeagle.github.io/tags/AudioUnit/"/>
+    
+      <category term="Player" scheme="https://codeeagle.github.io/tags/Player/"/>
+    
+      <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Re:Start</title>
+    <link href="https://codeeagle.github.io/2018/05/16/Re-Start/"/>
+    <id>https://codeeagle.github.io/2018/05/16/Re-Start/</id>
+    <published>2018-05-16T13:08:48.000Z</published>
+    <updated>2020-04-28T02:22:03.673Z</updated>
+    
+    <content type="html"><![CDATA[<h2><span id="0x00">0x00</span><a href="#0x00" class="header-anchor"></a></h2><p>前阵子刚好看到 <code>.app</code> 域名开放预购，顺便买了个试试，没想到成功了</p><p>想给 <code>io</code> 绑定域名试试，刚好前不久，Github Pages 连自定义域名都支持 Https 了</p><p>加上刚好这阵子把音乐播放器搞好了，于是重新开始写写博客吧</p><h2><span id="0x01-learning-rust-lang">0x01: Learning Rust lang</span><a href="#0x01-learning-rust-lang" class="header-anchor"></a></h2><p>Try this <a href="https://github.com/huytd/kanban-app" target="_blank" rel="noopener">https://github.com/huytd/kanban-app</a></p><h2><span id="0x10-publish-an-app">0x10: Publish an App</span><a href="#0x10-publish-an-app" class="header-anchor"></a></h2><p>Maybe a audio player app</p><h2><span id="0x11-blogging">0x11: Blogging</span><a href="#0x11-blogging" class="header-anchor"></a></h2><p>What I’m doing now!</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2&gt;&lt;span id=&quot;0x00&quot;&gt;0x00&lt;/span&gt;&lt;a href=&quot;#0x00&quot; class=&quot;header-anchor&quot;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;前阵子刚好看到 &lt;code&gt;.app&lt;/code&gt; 域名开放预购，顺便买了个试试，没想到成功了&lt;/p&gt;
+&lt;p&gt;想给 &lt;
+      
+    
+    </summary>
+    
+      <category term="随便写" scheme="https://codeeagle.github.io/categories/%E9%9A%8F%E4%BE%BF%E5%86%99/"/>
+    
+    
+      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+    
+      <category term="Blog" scheme="https://codeeagle.github.io/tags/Blog/"/>
+    
+      <category term="2018" scheme="https://codeeagle.github.io/tags/2018/"/>
+    
+  </entry>
+  
+</feed>
