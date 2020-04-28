@@ -116,11 +116,11 @@
       <category term="Swift Audio Player" scheme="https://codeeagle.github.io/categories/Swift-Audio-Player/"/>
     
     
-      <category term="Network" scheme="https://codeeagle.github.io/tags/Network/"/>
+      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
     
       <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
     
-      <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
+      <category term="Network" scheme="https://codeeagle.github.io/tags/Network/"/>
     
       <category term="Pipeline" scheme="https://codeeagle.github.io/tags/Pipeline/"/>
     
@@ -175,17 +175,17 @@
       <category term="Swift Audio Player" scheme="https://codeeagle.github.io/categories/Swift-Audio-Player/"/>
     
     
-      <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
+      <category term="Audio" scheme="https://codeeagle.github.io/tags/Audio/"/>
     
       <category term="Swift" scheme="https://codeeagle.github.io/tags/Swift/"/>
-    
-      <category term="Audio" scheme="https://codeeagle.github.io/tags/Audio/"/>
     
       <category term="AVFoundation" scheme="https://codeeagle.github.io/tags/AVFoundation/"/>
     
       <category term="AudioUnit" scheme="https://codeeagle.github.io/tags/AudioUnit/"/>
     
       <category term="Player" scheme="https://codeeagle.github.io/tags/Player/"/>
+    
+      <category term="Streamer" scheme="https://codeeagle.github.io/tags/Streamer/"/>
     
   </entry>
   
